@@ -18,6 +18,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
     boolean running = false;
     Timer timer;
 
+    int hueValue = 200;
+
     GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.white);
@@ -39,15 +41,18 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
     public void mouseMoved(MouseEvent e) {
         int xCoord = e.getX();
         int yCoord = e.getY();
-
         // Calculate grid position
         int gridX = xCoord / UNIT_SIZE;
         int gridY = yCoord / UNIT_SIZE;
         if (gridY < rows - 1 && gridX >= 0 && gridX < cols) {
-            int clickedCellValue = grid[gridX][gridY]; // Store clicked cell value
+            int cellValue = grid[gridX][gridY]; // Store clicked cell value
             // If clicked cell is empty and cell below is empty, move down
-            if (clickedCellValue == 0 ) {
-                grid[gridX][gridY] = 1; // Fill cell below
+            if (cellValue == 0 ) {
+                grid[gridX][gridY] = ++hueValue; // Fill cell below
+            }
+
+            if (hueValue > 360) {
+                 hueValue = 1;
             }
          }
     }
@@ -71,8 +76,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
             for (int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[i].length; j++) {
-                    if (grid[i][j] == 1) {
-                        g.setColor(Color.black);
+                    if (grid[i][j] > 0) {
+                        float hue = (float)grid[i][j]/360;
+                        g.setColor(Color.getHSBColor(hue, 1.0f, 1.0f));
                         g.fillRect(i*UNIT_SIZE, j*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
                     }
                 }
@@ -86,7 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
         for (int i = 0; i < cols; i++) {
             for (int j= 0; j < rows; j++) {
                 int state = grid[i][j];
-                if (state == 1) {
+                if (state > 0) {
                     int below = (j + 1 < rows) ? grid[i][j + 1] : 1;
                     int belowA = -1;
                     int belowB = -1;
