@@ -3,16 +3,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, MouseMotionListener {
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
-    static final int UNIT_SIZE = 25;
+    static final int UNIT_SIZE = 20;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
 
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
+    int cols =( SCREEN_WIDTH / UNIT_SIZE );
+    int rows = (SCREEN_HEIGHT / UNIT_SIZE);
+    int grid[][] = new int[cols ][rows];
 
-    int DELAY = 75;
+    int DELAY = 40;
     boolean running = false;
     Timer timer;
 
@@ -20,7 +23,37 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.white);
         this.setFocusable(true);
+        this.addMouseMotionListener(this);
+        start();
+    }
 
+    public void start() {
+        running = true;
+        timer = new Timer(DELAY, this);
+        timer.start();
+
+    }
+
+    
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        int xCoord = e.getX();
+        int yCoord = e.getY();
+
+        // Calculate grid position
+        int gridX = xCoord / UNIT_SIZE;
+        int gridY = yCoord / UNIT_SIZE;
+        if (gridY < rows - 1 && gridX >= 0 && gridX < cols) {
+            int clickedCellValue = grid[gridX][gridY]; // Store clicked cell value
+            // If clicked cell is empty and cell below is empty, move down
+            if (clickedCellValue == 0 ) {
+                grid[gridX][gridY] = 1; // Fill cell below
+            }
+         }
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      
     }
 
     @Override
@@ -30,11 +63,70 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void draw(Graphics g) {
-    
+        if (running) {
+            for (int i = 0; i<SCREEN_HEIGHT/UNIT_SIZE; i++) {
+                g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
+                g.drawLine(0, i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
+            }
+
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[i].length; j++) {
+                    if (grid[i][j] == 1) {
+                        g.setColor(Color.black);
+                        g.fillRect(i*UNIT_SIZE, j*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+                    }
+                }
+            }
+        }
+    }
+
+    public void move() {
+        int nextGrid[][] = new int[cols][rows]; 
+
+        for (int i = 0; i < cols; i++) {
+            for (int j= 0; j < rows; j++) {
+                int state = grid[i][j];
+                if (state == 1) {
+                    int below = (j + 1 < rows) ? grid[i][j + 1] : 1;
+                    int belowA = -1;
+                    int belowB = -1;
+                    int randomDirection = Math.random() < 0.5 ? 1 : -1;
+                    
+                    if(withinCols(i+randomDirection)) {
+                        belowA = (j + 1 < rows) ? grid[i+randomDirection][j + 1] : 1;
+                    }
+                    if(withinCols(i-randomDirection)) {
+                        belowB = (j + 1 < rows) ? grid[i-randomDirection][j + 1] : 1;
+                    }
+                    if (below == 0) {                        
+                        nextGrid[i][j + 1] = state;
+                    } else if (belowA == 0) {
+                        nextGrid[i+randomDirection][j + 1] = state;
+                    } else if (belowB == 0) {
+                        nextGrid[i-randomDirection][j + 1] = state;
+                    } else {
+                        nextGrid[i][j] = state;
+                    }
+                }
+            }
+        }
+
+        grid = nextGrid;
+    }
+
+    private boolean withinCols(int i) {
+        return i >= 0 && i < cols;
+    }
+
+    private boolean withinRows(int j) {
+        return j >= 0 && j < rows;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    
+        if (running) {
+            move();
+        }
+        repaint();
     }
 }
