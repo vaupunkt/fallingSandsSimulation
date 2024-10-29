@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -24,6 +23,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
         this.setBackground(Color.white);
         this.setFocusable(true);
         this.addMouseMotionListener(this);
+        this.addKeyListener(new MyKeyAdapter());
         start();
     }
 
@@ -128,5 +128,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
             move();
         }
         repaint();
+    }
+
+    public class MyKeyAdapter extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ENTER -> grid = new int[cols][rows];
+            }
+
+        }
     }
 }
