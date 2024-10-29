@@ -1,18 +1,27 @@
+# Falling Sands
+
+This project is inspired by [The Coding Train](https://www.youtube.com/@TheCodingTrain) and specifically the video ["Coding Challenge 180: Falling Sand"](https://www.youtube.com/watch?v=L4u7Zy_b868).
+
+## Overview
+
+The Falling Sands project simulates particles of sand falling, interacting with each other and the environment. This implementation is written in Java.
+
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+1. Clone the repository.
 
-## Folder Structure
+2. Open the project in your preferred Java development environment (e.g., IntelliJ IDEA, Eclipse).
 
-The workspace contains two folders by default, where:
+3. Build the project using your preferred build tool (e.g., Maven, Gradle).
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+4. Run the `App` class to start the simulation.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Functions
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+- Move the Mouse across the window to let the Sand fall
 
-## Dependency Management
+- Press Enter to Reset your Canvas
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Acknowledgements
+
+Special thanks to [The Coding Train](https://www.youtube.com/@TheCodingTrain) for the inspiration and educational content.
