@@ -22,6 +22,8 @@ The Falling Sands project simulates particles of sand falling, interacting with 
 
 - Press Enter to Reset your Canvas
 
+![Window Screenshot](image.png)
+
 ## Acknowledgements
 
 Special thanks to [The Coding Train](https://www.youtube.com/@TheCodingTrain) for the inspiration and educational content.

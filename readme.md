@@ -12,6 +12,8 @@ The Falling Sands project simulates particles of sand falling, interacting with 
 2. Open the project in your preferred development environment.
 3. Run the simulation and enjoy!
 
+![Screenshot](image.png)
+
 ## Acknowledgements
 
 Special thanks to [The Coding Train](https://www.youtube.com/@TheCodingTrain) for the inspiration and educational content.
